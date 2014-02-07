@@ -5,7 +5,7 @@ Plugin URI: http://imperativeideas.com
 Description: Configure alternate themes for older browsers
 Author: Imperative Ideas
 Author URI: http://www.imperativeideas.com
-Version: 1.1.1
+Version: 1.1.2
 */
 
 // Exit if accessed directly

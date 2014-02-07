@@ -7,6 +7,7 @@ global $is_IE;
 // Initialize the main variables
 global $ats_active;
 global $the_theme;
+global $the_template;
 
 // We only want to run this fat chunk of logic on IE since it's IE with the issues
 if ($is_IE) {
@@ -108,15 +109,39 @@ if ($is_IE) {
             return $the_theme;
         }
 
-        add_filter('template', 'change_theme');
-        add_filter('option_template', 'change_theme');
-        add_filter('option_stylesheet', 'change_theme');
+        // Set the returned theme to a variable so we can calculate the template in case of children
+        $chosen = change_theme();
+
+        // Move the chosen theme back to a function for the final action (better than running the logic twice)
+        function fetch_theme()
+        {
+            global $chosen;
+            return $chosen;
+        }
+
+        // In case of child theming, we need to calculate the template from the selected item
+        function if_child_theme()
+        {
+            global $chosen;
+            global $the_template;
+            $theme_data = wp_get_theme($chosen);
+            $the_template = $theme_data['Template'];
+            return $the_template;
+        }
+
+        // Filter it all down to the user
+        add_filter('template', 'if_child_theme');
+        add_filter('option_template', 'fetch_theme');
+        add_filter('option_stylesheet', 'fetch_theme');
     }
 }
 
 // For non-IE browsers, we check if the user is an admin and enable developer mode
-// IMPORTANT: Running the Alternate Theme Switcher in dev mode will cause wp_mail to break.
+// IMPORTANT: Running the Alternate Theme Switcher in dev mode will cause wp_mail to temporarily break.
 if ($ats_plugin['dev_mode'] == 1 && !empty($ats_plugin['dev_theme'])) {
+
+    global $the_template;
+    $the_template = "";
 
     if (!function_exists('wp_get_current_user')) {
         require(ABSPATH . WPINC . '/pluggable.php');
@@ -131,10 +156,19 @@ if ($ats_plugin['dev_mode'] == 1 && !empty($ats_plugin['dev_theme'])) {
             return $the_theme;
         }
 
+        function if_child_theme()
+        {
+            global $ats_plugin;
+            global $the_template;
+            $theme_data = wp_get_theme($ats_plugin['dev_theme']);
+            $the_template = $theme_data['Template'];
+            return $the_template;
+        }
+
         /* @todo if the theme is in developer mode, there should be a visual warning as a reminder */
 
         if ($ats_plugin['dev_mode'] == 1) {
-            add_filter('template', 'dev_theme');
+            add_filter('template', 'if_child_theme');
             add_filter('option_template', 'dev_theme');
             add_filter('option_stylesheet', 'dev_theme');
         }
