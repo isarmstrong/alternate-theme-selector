@@ -5,7 +5,7 @@ Plugin URI: http://imperativeideas.com
 Description: Configure alternate themes for older browsers
 Author: Imperative Ideas
 Author URI: http://www.imperativeideas.com
-Version: 1.1.2
+Version: 1.1.3
 */
 
 // Exit if accessed directly
@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Add some global locations
-define('ATS_VERSION', '1.1.1');
+define('ATS_VERSION', '1.1.3');
 define('ATS_NAME', 'Alternate Theme Selector');
 define('ATS_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('ATS_PLUGIN_URL', plugin_dir_url(__FILE__));

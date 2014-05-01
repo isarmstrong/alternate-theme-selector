@@ -116,6 +116,9 @@ if ($is_IE) {
         function fetch_theme()
         {
             global $chosen;
+	        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	        header("Cache-Control: post-check=0, pre-check=0", false);
+	        header("Pragma: no-cache");
             return $chosen;
         }
 
@@ -123,6 +126,9 @@ if ($is_IE) {
         function if_child_theme()
         {
             global $chosen;
+	        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	        header("Cache-Control: post-check=0, pre-check=0", false);
+	        header("Pragma: no-cache");
             global $the_template;
             $theme_data = wp_get_theme($chosen);
             $the_template = $theme_data['Template'];
@@ -152,6 +158,9 @@ if ($ats_plugin['dev_mode'] == 1 && !empty($ats_plugin['dev_theme'])) {
         function dev_theme()
         {
             global $ats_plugin;
+	        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	        header("Cache-Control: post-check=0, pre-check=0", false);
+	        header("Pragma: no-cache");
             $the_theme = $ats_plugin['dev_theme'];
             return $the_theme;
         }
@@ -160,6 +169,9 @@ if ($ats_plugin['dev_mode'] == 1 && !empty($ats_plugin['dev_theme'])) {
         {
             global $ats_plugin;
             global $the_template;
+	        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	        header("Cache-Control: post-check=0, pre-check=0", false);
+	        header("Pragma: no-cache");
             $theme_data = wp_get_theme($ats_plugin['dev_theme']);
             $the_template = $theme_data['Template'];
             return $the_template;
